@@ -53,7 +53,6 @@ const TaskList = () => {
     return true;
   });
 
-  // Apply due date and priority filters
   const filteredByDueDate = filteredTasks.filter((task) => {
     if (dueDateFilter === "") return true;
     return new Date(task.dueDate).toLocaleDateString() === new Date(dueDateFilter).toLocaleDateString();
@@ -64,39 +63,34 @@ const TaskList = () => {
     return task.priority === priorityFilter;
   });
 
-  // Sorting tasks by due date and priority
   const sortedTasks = filteredByPriority.sort((a, b) => {
-    // Sorting by Due Date
     if (dueDateFilter !== "") {
       return new Date(a.dueDate || Infinity) - new Date(b.dueDate || Infinity);
     }
 
-    // Sorting by Priority
     const priorityOrder = { High: 1, Normal: 2, Low: 3 };
     return priorityOrder[a.priority] - priorityOrder[b.priority];
   });
 
   return (
-    <div className={`mx-auto py-10 px-24 ${sortedTasks.length === 0 ? "h-screen" : [1, 2, 3].includes(sortedTasks.length) ? "h-full" : "h-full"} bg-darkPurple`}>
+    <div className={`m-0 py-10 px-10 ${sortedTasks.length === 0 ? "h-screen" : [1, 2, 3].includes(sortedTasks.length) ? "h-full" : "h-full"} bg-darkPurple`}>
       <h1 className="text-3xl font-bold text-center mb-6 bg-lightPurple p-4 rounded-lg text-darkRose w-full">
         To-Do List
       </h1>
       <TaskForm addTask={addTask} editTask={editTask} taskToEdit={taskToEdit} setTaskToEdit={setTaskToEdit} />
-      <div className="flex justify-between mb-4">
-        <select value={filter} onChange={(e) => setFilter(e.target.value)} className="border p-2 rounded-lg">
+      <div className="flex gap-4 flex-col lg:flex-row md:flex-row sm:flex-row justify-center items-center self-center mb-4 bg-lightPurple p-4 mt-auto rounded-lg w-full">
+        <select value={filter} onChange={(e) => setFilter(e.target.value)} className="border p-2 rounded-lg w-full lg:w-auto md:w-auto sm:w-auto">
           <option value="All">All</option>
           <option value="Completed">Completed</option>
           <option value="Incomplete">Incomplete</option>
         </select>
-        {/* Due Date filter */}
         <input
           type="date"
           value={dueDateFilter}
           onChange={(e) => setDueDateFilter(e.target.value)}
-          className="border p-2 rounded-lg"
+          className="border p-2 rounded-lg w-full lg:w-auto md:w-auto sm:w-auto"
         />
-        {/* Priority filter */}
-        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="border p-2 rounded-lg">
+        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="border p-2 rounded-lg w-full lg:w-auto md:w-auto sm:w-auto">
           <option value="">All Priority</option>
           <option value="High">High</option>
           <option value="Normal">Normal</option>
