@@ -6,7 +6,8 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [filter, setFilter] = useState("All");
-  const [sortBy, setSortBy] = useState("Due Date");
+  const [dueDateFilter, setDueDateFilter] = useState("");  // For due date filter
+  const [priorityFilter, setPriorityFilter] = useState("");  // For priority filter
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -24,7 +25,6 @@ const TaskList = () => {
     setTasks(newTasks);
     saveTasksToLocalStorage(newTasks);
   };
-  
 
   const editTask = (task, id) => {
     const updatedTasks = tasks.map((t) => (t.id === id ? task : t));
@@ -45,7 +45,6 @@ const TaskList = () => {
     setTasks(updatedTasks);
     saveTasksToLocalStorage(updatedTasks); // Save the updated tasks to localStorage
   };
-  
 
   const filteredTasks = tasks.filter((task) => {
     if (filter === "All") return true;
@@ -54,15 +53,27 @@ const TaskList = () => {
     return true;
   });
 
-  const sortedTasks = filteredTasks.sort((a, b) => {
-    if (sortBy === "Due Date") {
+  // Apply due date and priority filters
+  const filteredByDueDate = filteredTasks.filter((task) => {
+    if (dueDateFilter === "") return true;
+    return new Date(task.dueDate).toLocaleDateString() === new Date(dueDateFilter).toLocaleDateString();
+  });
+
+  const filteredByPriority = filteredByDueDate.filter((task) => {
+    if (priorityFilter === "") return true;
+    return task.priority === priorityFilter;
+  });
+
+  // Sorting tasks by due date and priority
+  const sortedTasks = filteredByPriority.sort((a, b) => {
+    // Sorting by Due Date
+    if (dueDateFilter !== "") {
       return new Date(a.dueDate || Infinity) - new Date(b.dueDate || Infinity);
     }
-    if (sortBy === "Priority") {
-      const priorityOrder = { High: 1, Normal: 2, Low: 3 };
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
-    }
-    return 0;
+
+    // Sorting by Priority
+    const priorityOrder = { High: 1, Normal: 2, Low: 3 };
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
   });
 
   return (
@@ -77,9 +88,19 @@ const TaskList = () => {
           <option value="Completed">Completed</option>
           <option value="Incomplete">Incomplete</option>
         </select>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="border p-2 rounded-lg">
-          <option value="Due Date">Due Date</option>
-          <option value="Priority">Priority</option>
+        {/* Due Date filter */}
+        <input
+          type="date"
+          value={dueDateFilter}
+          onChange={(e) => setDueDateFilter(e.target.value)}
+          className="border p-2 rounded-lg"
+        />
+        {/* Priority filter */}
+        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)} className="border p-2 rounded-lg">
+          <option value="">All Priority</option>
+          <option value="High">High</option>
+          <option value="Normal">Normal</option>
+          <option value="Low">Low</option>
         </select>
       </div>
       <div className={`bg-paleRose-75 p-5 rounded-lg ${tasks.length !== 0 ? "w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" : "flex flex-col justify-center"}`}>
