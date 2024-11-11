@@ -8,7 +8,7 @@ const TaskItem = ({ task, toggleComplete, deleteTask, setTaskToEdit }) => {
             <div>
                 <h3 className="font-bold text-3xl text-center mb-5 text-white">{task.name}</h3>
                 <div className="border h-60 border-gray-200 rounded-lg p-4 bg-paleRose-50 mb-5 flex flex-wrap">
-                    <p className="text-sm text-justify">{task.description}</p>
+                    <p className="text-sm text-justify text-white">{task.description}</p>
                 </div>
 
             </div>
