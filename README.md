@@ -2,6 +2,27 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+# To-Do List Application
+
+## Description
+
+This is a simple **To-Do List application** built with **React**. The app allows users to:
+
+- Add, edit, delete, and mark tasks as completed.
+- Use **form validation** to ensure that all fields are filled when adding/editing tasks.
+- Utilize **browser storage** (localStorage) to persist tasks between sessions.
+- Display tasks with visual distinction between active and completed tasks.
+
+## Features
+
+- Add new tasks with a name and description.
+- Edit existing tasks by updating their name and description.
+- Delete tasks with a confirmation prompt before deletion.
+- Mark tasks as completed and visually distinguish completed tasks from active ones.
+- Persist tasks between sessions using **localStorage**.
+- Use a simple yet user-friendly interface with CSS styling.
+
 ## Available Scripts
 
 In the project directory, you can run:
